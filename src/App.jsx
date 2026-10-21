@@ -1,3 +1,8 @@
+// improvements
+// 1. product card
+// 2. Paginator component and its logic
+// 3. Use try catch
+
 import { useEffect, useState } from "react";
 
 function App() {
@@ -42,7 +47,9 @@ function App() {
   return (
     <>
       <div className="paginator">
-        <button onClick={() => goToPreviousPage()}>Prev</button>
+        <button disabled={currentPage === 0} onClick={() => goToPreviousPage()}>
+          Prev
+        </button>
         {[...Array(numOfPage).keys()].map((n) => (
           <span
             className={"page-number " + (n === currentPage ? "active" : "")}
@@ -52,7 +59,12 @@ function App() {
             {n}
           </span>
         ))}
-        <button onClick={() => goToNextPage()}>Next</button>
+        <button
+          disabled={currentPage === numOfPage - 1}
+          onClick={() => goToNextPage()}
+        >
+          Next
+        </button>
       </div>
 
       <h3>Paginated Products</h3>
