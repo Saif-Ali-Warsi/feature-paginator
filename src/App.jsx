@@ -4,6 +4,7 @@ function App() {
   const API_URL = "https://dummyjson.com";
 
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const getProducts = async () => {
     const respnse = await fetch(`${API_URL}/products?limit=200`);
@@ -17,16 +18,53 @@ function App() {
     getProducts();
   }, []);
 
+  const page_size = 10;
+
+  const totalProduct = products.length;
+
+  const numOfPage = Math.ceil(totalProduct / page_size);
+
+  const start = currentPage * page_size;
+  const end = start + page_size;
+
+  const handlePageChange = (n) => {
+    setCurrentPage(n);
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
   return (
     <>
-      <h3>Products</h3>
-      {products.map((product) => (
-        <div key={product.id}>
-          <img src={product.thumbnail} alt={product.title} />
+      <div className="paginator">
+        <button onClick={() => goToPreviousPage()}>Prev</button>
+        {[...Array(numOfPage).keys()].map((n) => (
+          <span
+            className={"page-number " + (n === currentPage ? "active" : "")}
+            key={n}
+            onClick={() => handlePageChange(n)}
+          >
+            {n}
+          </span>
+        ))}
+        <button onClick={() => goToNextPage()}>Next</button>
+      </div>
 
-          <p>{product.title}</p>
-        </div>
-      ))}
+      <h3>Paginated Products</h3>
+      <div className="product-list">
+        {products.slice(start, end).map((product) => (
+          <div key={product.id} className="product-card">
+            <img src={product.thumbnail} alt={product.title} />
+
+            <p>{product.title}</p>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
