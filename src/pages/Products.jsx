@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 
+
+// improvements
+// 1. product card
+// 2. Paginator component and its logic
+// 3. Use try catch
+
 function Products() {
   const API_URL = "https://dummyjson.com";
 
